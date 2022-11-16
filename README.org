@@ -1,10 +1,10 @@
 * Fall 2022 - Lab 14
 
-* Last name:
+* Last name: Lin
 
-* First name:
+* First name: Jinxin
 
-* GitHub username:
+* GitHub username: jinxin0
 
 * Notes:
 
