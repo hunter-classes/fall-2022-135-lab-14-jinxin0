@@ -176,6 +176,11 @@ public:
         resize(0);
     }
     
+    void clear()
+    {
+        softClear();
+    }
+
     // remove element at index then shift items in array down
     void remove(const std::size_t& index)
     {
