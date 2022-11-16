@@ -1,0 +1,87 @@
+* Fall 2022 - Lab 14
+
+* Last name:
+
+* First name:
+
+* GitHub username:
+
+* Notes:
+
+
+  
+* General instructions:
+- Fill in your name and GitHub username on top.
+- Use the Notes section to add any notes to the instructor.
+
+This and future labs will start with a mostly empty repository. 
+
+You must:
+
+1. Use ~doctest.h~ based tests to test your solutions unless a
+   specific task says otherwise.
+2. Have a ~Makefile~ with at least the following targets: 
+   1. ~main~ to build *main* which will run your project
+   2. ~tests~ to build *tests* which will run the doctest based tests
+   3. ~clean~ which will remove *.o* files
+3. At least three  ~.cpp~ files - ~main.cpp~, ~tests.cpp~ and at least
+   one more with solutions to the labs. You will also need the
+   appropriate ~.h~ files.
+
+
+* Notes
+
+
+
+* Lab instructions
+
+** Prep work
+
+Watch these three videos:
+
+- Inheritance: https://www.youtube.com/watch?v=sSw893nIX70
+- Template classes: https://www.youtube.com/watch?v=qqkBuTPWPog
+- Operator overloading: https://www.youtube.com/watch?v=n4L0gxhZMe8
+
+There are tons of videos and tutorials on each of these subjects so
+feel free to also search for those.
+
+The source code files to match the videos are under classcode/classes
+on the class website/repo.
+
+
+
+** Lab assignment
+
+You are going to create a template class named ~MyVector~. It will
+mimic some of the basic operations of a C++ Vector (or Java
+ArrayList).
+
+Since it's a template class it should be able to store data of any
+type.
+
+~MyVector~ should store its data in a private instance variable that's
+a dynamic array (see Lab 09 for reference) Start the array at some
+reasonable size. If it needs more size, you will have to grow the
+array by making a new dynamic array, copying over the data and
+re-assigning the instance variable. You will not have to "shrink" the
+array in this assignment.
+
+The ~MyVector~ class should provide the following methods. They
+should perform as they do for the C++ vector:
+
+- size()
+- capacity()
+- empty()
+- push_back(item)
+- pop_back(n)
+- pop_back()
+- clear()
+- [] for access and assignment (assuming that given the expression
+  a[n] that n is in range)
+
+See lab 12 for vector reference.
+
+This lab should be follow our usual requirements - Makefile, targets
+for main, clean, and tests and testing done via doctest.
+
