@@ -1,45 +1,45 @@
-template<class DynamicArray>
-class DynamicArrayIterator
+template<class MyVector>
+class MyVectorIterator
 {
 public:
-    using ValueType = typename DynamicArray::ValueType;
+    using ValueType = typename MyVector::ValueType;
 
 private:
     ValueType* m_Ptr;
 
 public:
-    DynamicArrayIterator(ValueType* ptr)
+    MyVectorIterator(ValueType* ptr)
         : m_Ptr(ptr)
     {
     }
 
-    ~DynamicArrayIterator()
+    ~MyVectorIterator()
     {
     }
 
-    DynamicArrayIterator& operator++()
+    MyVectorIterator& operator++()
     {
         m_Ptr++;
         return *this;
     }
 
-    DynamicArrayIterator operator++(int)
+    MyVectorIterator operator++(int)
     {
-        DynamicArrayIterator temp = *this; // save current state
+        MyVectorIterator temp = *this; // save current state
         m_Ptr++; // increment pointer
         return temp; // return the old state
     }
 
-    DynamicArrayIterator& operator--()
+    MyVectorIterator& operator--()
     {
         m_Ptr--;
         return *this;
     }
 
-    DynamicArrayIterator operator--(int)
+    MyVectorIterator operator--(int)
     {
-        DynamicArrayIterator temp = *this; // save current state
-        m_Ptr--; // increment pointer
+        MyVectorIterator temp = *this; // save current state
+        m_Ptr--; // decrement pointer
         return temp; // return the old state
     }
 
@@ -58,19 +58,19 @@ public:
         return *(m_Ptr);
     }
 
-    bool operator==(const DynamicArrayIterator& other) const
+    bool operator==(const MyVectorIterator& other) const
     {
         return m_Ptr == other.m_Ptr;
     }
 
-    bool operator!=(const DynamicArrayIterator& other) const
+    bool operator!=(const MyVectorIterator& other) const
     {
         return m_Ptr != other.m_Ptr;
     }
 };
 
 template <typename T>
-class DynamicArray
+class MyVector
 {
 private:
     std::size_t m_Size = 0;
@@ -79,7 +79,7 @@ private:
 
 public:
     using ValueType = T;
-    using Iterator = DynamicArrayIterator<DynamicArray<T>>;
+    using Iterator = MyVectorIterator<MyVector<T>>;
 
 private:
     void copy(T* const from, T* const to, std::size_t count)
@@ -95,36 +95,36 @@ private:
     }
 
 public:
-    DynamicArray(const std::size_t& capacity = 2)
+    MyVector(const std::size_t& capacity = 2)
         : m_Capacity(capacity),
         m_Array((T*)::operator new(capacity * sizeof(T)))
     {
     }
 
-    DynamicArray(const DynamicArray<T>& array)
-        : m_Size(array.getSize()),
-        m_Capacity(array.getCapacity()),
-        m_Array((T*)::operator new(array.getCapacity() * sizeof(T)))
+    MyVector(const MyVector<T>& array)
+        : m_Size(array.size()),
+        m_Capacity(array.capcity()),
+        m_Array((T*)::operator new(array.capcity() * sizeof(T)))
     {
-        copy(array.data(), data(), std::min(array.getSize(), getSize()));
+        copy(array.data(), data(), std::min(array.size(), size()));
     }
 
-    DynamicArray(DynamicArray<T>&& array)
-        : m_Capacity(std::move(array.getCapacity())),
-        m_Size(std::move(array.getSize())),
+    MyVector(MyVector<T>&& array)
+        : m_Capacity(std::move(array.capcity())),
+        m_Size(std::move(array.size())),
         m_Array(std::move(array.data()))
     {
         array.m_Array = nullptr;
     }
 
-    ~DynamicArray()
+    ~MyVector()
     {
         delete[] m_Array;
     }
 
     T& operator[](const std::size_t& index)
     {
-        if (index >= getSize())
+        if (index >= size())
             throw std::out_of_range("Index out of bound");
 
         return data()[index];    
@@ -132,7 +132,7 @@ public:
 
     const T& at(const std::size_t& index) const
     {
-        if (index >= getSize())
+        if (index >= size())
             throw std::out_of_range("Index out of bound");
 
         return m_Array[index];
@@ -140,7 +140,7 @@ public:
 
     T& at(const std::size_t& index)
     {
-        if (index >= getSize())
+        if (index >= size())
             throw std::out_of_range("Index out of bound");
 
         return data()[index];
@@ -148,14 +148,14 @@ public:
 
     void resize(const std::size_t& capacity)
     {
-        if (getCapacity() == capacity)
+        if (capcity() == capacity)
             return;
         
         m_Capacity = capacity;
-        if (getSize() > capacity)
+        if (size() > capacity)
             m_Size = capacity;
         T* newArray = (T*)::operator new(capacity * sizeof(T));
-        move(data(), newArray, getSize());
+        move(data(), newArray, size());
         delete[] m_Array;
         m_Array = newArray;
     }
@@ -163,7 +163,7 @@ public:
     // shrink capacity to size
     void shrinkToFit()
     {
-        resize(getSize());
+        resize(size());
     }
 
     void softClear()
@@ -179,25 +179,25 @@ public:
     // remove element at index then shift items in array down
     void remove(const std::size_t& index)
     {
-        if (index >= getSize())
+        if (index >= size())
             throw std::out_of_range("Index out of bound");
 
         // shifting left
-        for (std::size_t i = index, end = getSize() - 1; i < end; ++i)
+        for (std::size_t i = index, end = size() - 1; i < end; ++i)
             at(i) = at(i + 1);
         --m_Size;
     }
 
     void insert(const std::size_t& index, const T& item)
     {
-        if (index > getSize())
+        if (index > size())
             throw std::out_of_range("Index out of bound");
 
-        if (getSize() == getCapacity())
-            resize(getCapacity() * 1.5);
+        if (size() == capcity())
+            resize(capcity() * 1.5);
 
         // shifting right
-        for (std::size_t i = getSize(); i > index; --i)
+        for (std::size_t i = size(); i > index; --i)
             m_Array[i] = at(i - 1);
         at(index) = item;
         ++m_Size;
@@ -205,44 +205,44 @@ public:
     
     void insert(const std::size_t& index, T&& item)
     {
-        if (index > getSize())
+        if (index > size())
             throw std::out_of_range("Index out of bound");
 
-        if (getSize() == getCapacity())
-            resize(getCapacity() * 1.5);
+        if (size() == capcity())
+            resize(capcity() * 1.5);
 
         // shifting right
-        for (std::size_t i = getSize(); i > index; --i)
+        for (std::size_t i = size(); i > index; --i)
             m_Array[i] = at(i - 1);
         at(index) = std::move(item);
         ++m_Size;
     }
 
-    void popBack()
+    void pop_back()
     {
         --m_Size;
     }
 
-    void pushBack(const T& item)
+    void push_back(const T& item)
     {
-        if (getSize() >= getCapacity())
-            resize(getCapacity() * 1.5);
+        if (size() >= capcity())
+            resize(capcity() * 1.5);
         at(m_Size++) = item;
     }
     
-    void pushBack(T&& item)
+    void push_back(T&& item)
     {
-        if (getSize() >= getCapacity())
-            resize(getCapacity() * 1.5);
+        if (size() >= capcity())
+            resize(capcity() * 1.5);
         at(m_Size++) = std::move(item);
     }
 
     template<typename... Args>
-    void emplaceBack(Args&&... args)
+    void emplace_back(Args&&... args)
     {
-        if (getSize() >= getCapacity())
-            resize(getCapacity() * 1.5);
-        new(&m_Array[getSize()]) T(std::forward<Args>(args)...);
+        if (size() >= capcity())
+            resize(capcity() * 1.5);
+        new(&m_Array[size()]) T(std::forward<Args>(args)...);
         ++m_Size;
     }
     
@@ -264,9 +264,9 @@ public:
 
     Iterator end()
     {
-        return Iterator(data() + getSize());
+        return Iterator(data() + size());
     }
-    
+
     const Iterator begin() const 
     {
         return Iterator(data());
@@ -274,7 +274,17 @@ public:
 
     const Iterator end() const
     {
-        return Iterator(data() + getSize());
+        return Iterator(data() + size());
+    }
+    
+    const Iterator cbegin() const 
+    {
+        return Iterator(data());
+    }
+
+    const Iterator cend() const
+    {
+        return Iterator(data() + size());
     }
 
     T& front()
@@ -284,20 +294,20 @@ public:
 
     T& back()
     {
-        return at(getSize() - 1);
+        return at(size() - 1);
     }
 
-    bool isEmpty() const
+    bool empty() const
     {
-        return (getSize() == 0);
+        return (size() == 0);
     }
 
-    std::size_t getSize() const
+    std::size_t size() const
     {
         return m_Size;
     }
 
-    std::size_t getCapacity() const
+    std::size_t capcity() const
     {
         return m_Capacity;
     }

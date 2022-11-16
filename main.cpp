@@ -1,13 +1,13 @@
 #include <iostream> 
 
-#include "DynamicArray.hpp"
+#include "MyVector.hpp"
 
 #define PRINT(x) std::cout << x
 #define NEWLINE std::cout << '\n'
 #define PRINTLN(x) std::cout << x << '\n'
 
 template<typename T>
-void printArray(const DynamicArray<T>& arr)
+void printArray(const MyVector<T>& arr)
 {
     for (const auto& i : arr)
         std::cout << i << ' ';  
@@ -16,11 +16,11 @@ void printArray(const DynamicArray<T>& arr)
 
 int main(void)
 {
-    DynamicArray<int> arr;
+    MyVector<int> arr;
     for (int i = 0; i < 20; i++)
-        arr.pushBack(i);
+        arr.push_back(i);
     printArray(arr);
-    PRINT(arr.getSize());
+    PRINT(arr.size());
     NEWLINE;
     //arr.remove(19);
     //printArray(arr);
@@ -30,22 +30,22 @@ int main(void)
     NEWLINE;
     arr.at(2) = 22;
     printArray(arr);
-    PRINT(arr.getCapacity());
+    PRINT(arr.capcity());
     NEWLINE;
-    PRINT(arr.getSize());
+    PRINT(arr.size());
     NEWLINE;
-    PRINT(arr.isEmpty());
+    PRINT(std::boolalpha << arr.empty());
     NEWLINE;
     arr.remove(2);
     printArray(arr);
     arr.insert(2, 2);
     printArray(arr);
-    arr.popBack();
+    arr.pop_back();
     printArray(arr);
-    arr.emplaceBack(19);
+    arr.emplace_back(19);
     printArray(arr);
     arr.shrinkToFit();
-    PRINT(arr.getSize());
-    PRINT(arr.getCapacity());
+    PRINT(arr.size());
+    PRINT(arr.capcity());
     NEWLINE;
 }
