@@ -2,13 +2,17 @@ template<class MyVector>
 class MyVectorIterator
 {
 public:
-    using ValueType = typename MyVector::ValueType;
+    using difference_type = std::ptrdiff_t;
+    using value_type = typename MyVector::ValueType;
+    using pointer = value_type*;
+    using reference = value_type&;
+    using iterator_category = std::output_iterator_tag;
 
 private:
-    ValueType* m_Ptr;
+    pointer m_Ptr;
 
 public:
-    MyVectorIterator(ValueType* ptr)
+    MyVectorIterator(pointer ptr)
         : m_Ptr(ptr)
     {
     }
@@ -43,17 +47,17 @@ public:
         return temp; // return the old state
     }
 
-    ValueType& operator[](int index)
+    reference operator[](int index)
     {
         return m_Ptr[index];
     }
 
-    ValueType* operator->()
+    pointer operator->()
     {
         return m_Ptr;
     }
 
-    ValueType& operator*()
+    reference operator*()
     {
         return *(m_Ptr);
     }
