@@ -111,14 +111,14 @@ public:
 
     MyVector(const MyVector<T>& array)
         : m_Size(array.size()),
-        m_Capacity(array.capcity()),
-        m_Array((T*)::operator new(array.capcity() * sizeof(T)))
+        m_Capacity(array.capacity()),
+        m_Array((T*)::operator new(array.capacity() * sizeof(T)))
     {
         copy(array.data(), data(), std::min(array.size(), size()));
     }
 
     MyVector(MyVector<T>&& array)
-        : m_Capacity(std::move(array.capcity())),
+        : m_Capacity(std::move(array.capacity())),
         m_Size(std::move(array.size())),
         m_Array(std::move(array.data()))
     {
@@ -154,15 +154,15 @@ public:
         return data()[index];
     }
 
-    void resize(const std::size_t& capacity)
+    void resize(const std::size_t& cap)
     {
-        if (capcity() == capacity)
+        if (capacity() == cap)
             return;
         
-        m_Capacity = capacity;
-        if (size() > capacity)
-            m_Size = capacity;
-        T* newArray = (T*)::operator new(capacity * sizeof(T));
+        m_Capacity = cap;
+        if (size() > cap)
+            m_Size = cap;
+        T* newArray = (T*)::operator new(cap * sizeof(T));
         move(data(), newArray, size());
         delete[] m_Array;
         m_Array = newArray;
@@ -206,8 +206,8 @@ public:
         if (index > size())
             throw std::out_of_range("Index out of bound");
 
-        if (size() == capcity())
-            resize(capcity() * 1.5);
+        if (size() == capacity())
+            resize(capacity() * 1.5);
 
         // shifting right
         for (std::size_t i = size(); i > index; --i)
@@ -221,8 +221,8 @@ public:
         if (index > size())
             throw std::out_of_range("Index out of bound");
 
-        if (size() == capcity())
-            resize(capcity() * 1.5);
+        if (size() == capacity())
+            resize(capacity() * 1.5);
 
         // shifting right
         for (std::size_t i = size(); i > index; --i)
@@ -238,23 +238,23 @@ public:
 
     void push_back(const T& item)
     {
-        if (size() >= capcity())
-            resize(capcity() * 1.5);
+        if (size() >= capacity())
+            resize(capacity() * 1.5);
         at(m_Size++) = item;
     }
     
     void push_back(T&& item)
     {
-        if (size() >= capcity())
-            resize(capcity() * 1.5);
+        if (size() >= capacity())
+            resize(capacity() * 1.5);
         at(m_Size++) = std::move(item);
     }
 
     template<typename... Args>
     void emplace_back(Args&&... args)
     {
-        if (size() >= capcity())
-            resize(capcity() * 1.5);
+        if (size() >= capacity())
+            resize(capacity() * 1.5);
         new(&m_Array[size()]) T(std::forward<Args>(args)...);
         ++m_Size;
     }
@@ -320,7 +320,7 @@ public:
         return m_Size;
     }
 
-    std::size_t capcity() const
+    std::size_t capacity() const
     {
         return m_Capacity;
     }

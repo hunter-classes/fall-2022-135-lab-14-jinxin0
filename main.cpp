@@ -30,7 +30,7 @@ int main(void)
     NEWLINE;
     arr.at(2) = 22;
     printArray(arr);
-    PRINT(arr.capcity());
+    PRINT(arr.capacity());
     NEWLINE;
     PRINT(arr.size());
     NEWLINE;
@@ -46,6 +46,6 @@ int main(void)
     printArray(arr);
     arr.shrinkToFit();
     PRINT(arr.size());
-    PRINT(arr.capcity());
+    PRINT(arr.capacity());
     NEWLINE;
 }
