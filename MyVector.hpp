@@ -82,16 +82,16 @@ public:
     using Iterator = MyVectorIterator<MyVector<T>>;
 
 private:
-    void copy(T* const from, T* const to, std::size_t count)
+    void copy(const T* const from, T* const to, std::size_t count)
     {
         for (std::size_t i = 0; i < count; i++)
-            to[i] = from[i];
+            *(to + i) = *(from + i);
     }
 
     void move(T* const from, T* const to, std::size_t count)
     {
         for (std::size_t i = 0; i < count; i++)
-            to[i] = std::move(from[i]);
+            *(to + i) = std::move(*(from + i));
     }
 
 public:
