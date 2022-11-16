@@ -101,6 +101,14 @@ public:
     {
     }
 
+    MyVector(std::initializer_list<T> l)
+        : m_Size(l.size()),
+        m_Capacity(l.size()),
+        m_Array((T*)::operator new(l.size() * sizeof(T)))
+    {
+        copy(std::data(l), data(), l.size());
+    }
+
     MyVector(const MyVector<T>& array)
         : m_Size(array.size()),
         m_Capacity(array.capcity()),
