@@ -136,9 +136,6 @@ public:
 
     T& operator[](const std::size_t& index)
     {
-        if (index >= size())
-            throw std::out_of_range("Index out of bound");
-
         return data()[index];    
     }
 
@@ -147,7 +144,7 @@ public:
         if (index >= size())
             throw std::out_of_range("Index out of bound");
 
-        return m_Array[index];
+        return data()[index];
     }
 
     T& at(const std::size_t& index)
